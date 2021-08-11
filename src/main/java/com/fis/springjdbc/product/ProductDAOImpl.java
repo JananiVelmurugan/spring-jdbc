@@ -11,22 +11,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements IProduct {
 
 	public List<Product> getAllProducts() {
 		String sql = "select * from product";
-//		List<Product> products = getJdbcTemplate().query(sql, new RowMapper<Product>() {
-//			public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-//				Product product = new Product();
-//				product.setId(rs.getInt("id"));
-//				product.setName(rs.getString("name"));
-//				return product;
-//			}
-//		});
-//		List<Product> products = getJdbcTemplate().query(sql, (rs, rowNum) -> {
-//			Product product = new Product();
-//			product.setId(rs.getInt("id"));
-//			product.setName(rs.getString("name"));
-//			return product;
-//		});
 		List<Product> products = getJdbcTemplate().query(sql, new ProductMapper());
-
 		return products;
 	}
 
@@ -61,8 +46,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements IProduct {
 	public Product getProductById(int id) {
 		String sql = "select * from product where id=?";
 		Object[] args = { id };
-		ProductMapper mapper = new ProductMapper();
-		Product productById = getJdbcTemplate().queryForObject(sql, args, mapper::mapRow);
+		Product productById = getJdbcTemplate().queryForObject(sql, args, new ProductMapper());
 		return productById;
 	}
 
